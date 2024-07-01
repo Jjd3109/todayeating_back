@@ -3,7 +3,7 @@ package org.example.todayeating_back.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.todayeating_back.dto.request.MapInfo;
-import org.example.todayeating_back.entity.MapEntity;
+import org.example.todayeating_back.entity.Map;
 import org.example.todayeating_back.service.MapService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class MapInfoController {
 
     private final MapService mapService;
 
-    @PostMapping("/saveMapInfo")
+    @PostMapping("/save/MapInfo")
     public ResponseEntity<?> saveMapInfo(
             @RequestParam("location") String location,
             @RequestParam("content") String content,
@@ -28,10 +28,23 @@ public class MapInfoController {
             @RequestParam("latitude") double latitude,
             @RequestParam("longitude") double longitude
     ) throws IOException {
-        
 
-        MapEntity mapEntity = MapEntity.saveMap(location, content, markerId, latitude, longitude);
 
-        return ResponseEntity.ok().body(mapService.saveMap(mapEntity));
+        Map map = Map.saveMap(location, content, markerId, latitude, longitude);
+
+        return ResponseEntity.ok().body(mapService.saveMap(map));
+    }
+
+    @GetMapping("/findMapInfo")
+    public ResponseEntity<?> findMapInfo()  {
+
+        return ResponseEntity.ok().body(mapService.findMap());
+    }
+
+    @PostMapping("/delete/MapInfo")
+    public ResponseEntity<?> deleteMapInfo(@RequestParam("markerId") String markerId){
+
+        mapService.deleteMap(markerId);
+        return ResponseEntity.ok().body("");
     }
 }
