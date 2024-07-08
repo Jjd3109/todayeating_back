@@ -29,7 +29,8 @@ public class MapService {
                 for(MultipartFile imageFile : imageFiles){
                     if (!imageFiles.isEmpty()) {
                         String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-                        Path filePath = Paths.get("C:/Users/정종두/Desktop/테스트/" + fileName);
+                        //Path filePath = Paths.get("C:/Users/정종두/Desktop/테스트/" + fileName);
+                        Path filePath = Paths.get("C:/Users/JD/Desktop/새 폴더/" + fileName);
                         Files.copy(imageFile.getInputStream(), filePath);
 
                         Images image = Images.builder()
