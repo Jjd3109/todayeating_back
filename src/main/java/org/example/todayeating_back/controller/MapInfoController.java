@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.todayeating_back.dto.request.MapInfo;
 import org.example.todayeating_back.dto.response.FindMapInfo;
 import org.example.todayeating_back.entity.Map;
-import org.example.todayeating_back.service.ImagesService;
 import org.example.todayeating_back.service.MapService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +19,9 @@ import java.util.List;
 public class MapInfoController {
 
     private final MapService mapService;
-    private final ImagesService imagesService;
 
-    @PostMapping("/save/MapInfo")
+
+    @PostMapping("/save/mapInfo")
     public ResponseEntity<?> saveMapInfo(
             @RequestParam("location") String location,
             @RequestParam("content") String content,
@@ -35,34 +34,23 @@ public class MapInfoController {
 
     ) throws IOException {
 
-        for(MultipartFile multipartFile : images){
-            log.info("테스트");
-            log.info("multipartFile 값 = {}", multipartFile.getOriginalFilename());
-        }
         Map map = Map.saveMap(location, content, markerId, review, latitude, longitude, rating);
         FindMapInfo savedMap = mapService.saveMapWithImages(map, images);
 
         return ResponseEntity.ok().body(savedMap);
     }
 
-    @GetMapping("/findMapInfo")
+    @GetMapping("/find/mapInfo")
     public ResponseEntity<?> findMapInfo() {
         return ResponseEntity.ok().body(mapService.findMap());
     }
 
-    @PostMapping("/delete/MapInfo")
+    @PostMapping("/delete/mapInfo")
     public ResponseEntity<?> deleteMapInfo(@RequestParam("markerId") String markerId) {
 
         mapService.deleteMap(markerId);
         return ResponseEntity.ok().body("");
     }
 
-    @PostMapping("/save/image")
-    public ResponseEntity<?> saveImage(@RequestParam("image") MultipartFile image) throws IOException {
 
-        // 파일 저장 로직 추가
-        // 예: File 저장, 데이터베이스 저장 등
-
-        return ResponseEntity.ok().body(imagesService.saveImage(image));
-    }
 }
