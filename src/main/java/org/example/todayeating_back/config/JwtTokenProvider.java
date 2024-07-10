@@ -21,12 +21,30 @@ public class JwtTokenProvider {
     @Value("${jwt.expiration}")
     private long validityInMilliseconds;
 
+    @Value("${jwt.refreshExpiration}")
+    private long refreshTokenValidityInMilliseconds;
+
     public String createToken(String username, Collection<? extends GrantedAuthority> roles) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", roles.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
+
+    public String createRefreshToken(String username) {
+        Claims claims = Jwts.claims().setSubject(username);
+
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + refreshTokenValidityInMilliseconds);
 
         return Jwts.builder()
                 .setClaims(claims)
