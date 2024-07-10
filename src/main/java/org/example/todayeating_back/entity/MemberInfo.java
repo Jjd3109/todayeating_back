@@ -26,6 +26,12 @@ public class MemberInfo implements UserDetails {
     private String email;
     private String password;
 
+    private String nickname;
+
+    @OneToMany(mappedBy = "memberInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoomAndMemberConnect> roomConnections = new ArrayList<>();
+
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
