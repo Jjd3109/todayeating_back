@@ -2,8 +2,7 @@ package org.example.todayeating_back.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.todayeating_back.dto.request.MapInfo;
-import org.example.todayeating_back.dto.response.FindMapInfo;
+import org.example.todayeating_back.dto.response.FindMapInfoResponse;
 import org.example.todayeating_back.entity.Map;
 import org.example.todayeating_back.service.MapService;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class MapInfoController {
     ) throws IOException {
 
         Map map = Map.saveMap(location, content, markerId, review, latitude, longitude, rating);
-        FindMapInfo savedMap = mapService.saveMapWithImages(map, images);
+        FindMapInfoResponse savedMap = mapService.saveMapWithImages(map, images);
 
         return ResponseEntity.ok().body(savedMap);
     }

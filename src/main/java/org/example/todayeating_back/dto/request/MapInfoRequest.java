@@ -1,6 +1,6 @@
 package org.example.todayeating_back.dto.request;
 
-public record MapInfo(
+public record MapInfoRequest(
         Long id,
         String location,
         String content,

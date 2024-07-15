@@ -1,10 +1,7 @@
 package org.example.todayeating_back.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
+@ToString
 public class RoomAndMemberConnect {
 
     @Id
@@ -24,6 +22,14 @@ public class RoomAndMemberConnect {
     @JoinColumn(name = "memberInfo_id")
     private MemberInfo memberInfo;
 
-    @OneToMany(mappedBy = "roomAndMemberConnect", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Room> room = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Room_id")
+    private Room room;
+
+    public static RoomAndMemberConnect saveRoomAndMemberConnect(MemberInfo memberInfo, Room room){
+        RoomAndMemberConnect roomAndMemberConnect = new RoomAndMemberConnect();
+        roomAndMemberConnect.memberInfo = memberInfo;
+        roomAndMemberConnect.room =room;
+        return roomAndMemberConnect;
+    }
 }

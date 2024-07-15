@@ -2,7 +2,7 @@ package org.example.todayeating_back.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.todayeating_back.dto.response.FindMapInfo;
+import org.example.todayeating_back.dto.response.FindMapInfoResponse;
 import org.example.todayeating_back.entity.Images;
 import org.example.todayeating_back.entity.Map;
 import org.example.todayeating_back.repository.MapRepository;
@@ -14,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +22,7 @@ public class MapService {
 
     private final MapRepository mapRepository;
 
-    public FindMapInfo saveMapWithImages(Map map, List<MultipartFile> imageFiles) throws IOException {
+    public FindMapInfoResponse saveMapWithImages(Map map, List<MultipartFile> imageFiles) throws IOException {
 
             try {
                 for(MultipartFile imageFile : imageFiles){
@@ -41,15 +40,15 @@ public class MapService {
                     }
                 }
             }catch (NullPointerException n){
-                return FindMapInfo.from(mapRepository.save(map));
+                return FindMapInfoResponse.from(mapRepository.save(map));
             }
 
-        return FindMapInfo.from(mapRepository.save(map));
+        return FindMapInfoResponse.from(mapRepository.save(map));
     }
 
-    public List<FindMapInfo> findMap() {
+    public List<FindMapInfoResponse> findMap() {
         return mapRepository.findAll().stream()
-                .map(FindMapInfo::from) // Map -> FindMapInfo 변환
+                .map(FindMapInfoResponse::from) // Map -> FindMapInfoResponse 변환
                 .toList();
     }
 

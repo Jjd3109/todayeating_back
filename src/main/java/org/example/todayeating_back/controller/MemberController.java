@@ -37,10 +37,14 @@ public class MemberController {
      * 로그인시 Token 발급 일단은 accessToken 만 사용.
      */
     @GetMapping("/api/v1/login/member")
-    public ResponseEntity<?> login(@RequestBody MemberInfoRequest memberInfoRequest) {
+    public ResponseEntity<?> login(@RequestParam("email") String email, @RequestParam("password") String password) {
+        log.info("memberInfo 값 = {}", email);
+        log.info("memberInfo 값 = {}", password);
+
         try {
-            String token = memberService.login(memberInfoRequest.email(), memberInfoRequest.password()); // accessToken 발급
-            String refreshToken = memberService.createRefreshToken(memberInfoRequest.email()); // refreshToken 발급
+
+            String token = memberService.login(email, password); // accessToken 발급
+            String refreshToken = memberService.createRefreshToken(email); // refreshToken 발급
 
             return ResponseEntity.ok().body(Token.token(token, refreshToken));
         } catch (UsernameNotFoundException e) {

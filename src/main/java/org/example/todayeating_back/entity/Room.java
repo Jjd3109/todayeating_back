@@ -1,5 +1,6 @@
 package org.example.todayeating_back.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,11 +21,23 @@ public class Room {
     private String roomName;
     private String roomPassword;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roomAndMemberConnect_id")
-    private RoomAndMemberConnect roomAndMemberConnect;
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoomAndMemberConnect> roomAndMemberConnect = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Map> map = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "memberinfo_id")
+    @JsonIgnore
+    private MemberInfo memberInfo;
+
+    public static Room saveRoom(String roomName, String roomPassword, MemberInfo memberInfo){
+        Room room = new Room();
+        room.roomName = roomName;
+        room.roomPassword = roomPassword;
+        room.memberInfo = memberInfo;
+        return room;
+    }
 
 }
