@@ -38,7 +38,9 @@ public class SecurityConfig {
         http.formLogin(formLogin -> formLogin.disable());
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/v1/find/mapInfo").hasRole("USER")
-                //.requestMatchers("/api/v1/find/mapInfo").permitAll()
+                .requestMatchers("/api/v1/save/mapInfo").hasRole("USER")
+                .requestMatchers("/api/v1/delete/mapInfo").hasRole("USER")
+                .requestMatchers("/images/**").hasRole("USER")
                 .requestMatchers("/api/v1/save/member").permitAll()
                 .requestMatchers("/api/v1/login/member").permitAll()
                 .anyRequest().anonymous()

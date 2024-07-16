@@ -46,6 +46,9 @@ public class MemberController {
             String token = memberService.login(email, password); // accessToken 발급
             String refreshToken = memberService.createRefreshToken(email); // refreshToken 발급
 
+
+            log.info("token 값 = {}", token);
+            log.info("refreshToken 값 = {}", refreshToken);
             return ResponseEntity.ok().body(Token.token(token, refreshToken));
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("이메일 또는 비밀번호가 틀립니다.");

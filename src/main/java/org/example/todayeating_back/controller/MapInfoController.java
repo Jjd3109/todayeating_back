@@ -33,7 +33,9 @@ public class MapInfoController {
 
     ) throws IOException {
 
+
         Map map = Map.saveMap(location, content, markerId, review, latitude, longitude, rating);
+
         FindMapInfoResponse savedMap = mapService.saveMapWithImages(map, images);
 
         return ResponseEntity.ok().body(savedMap);
