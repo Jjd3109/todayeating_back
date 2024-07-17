@@ -2,6 +2,7 @@ package org.example.todayeating_back.service;
 
 import jakarta.transaction.Transactional;
 import org.example.todayeating_back.config.JwtTokenProvider;
+import org.example.todayeating_back.dto.request.MemberInfoRequest;
 import org.example.todayeating_back.entity.MemberInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,12 @@ class MemberServiceTest {
         //given
         String email = "test@test.co.kr";
         String password = "1234";
+        String nickName = "정두";
+
+        MemberInfoRequest memberInfoRequest = new MemberInfoRequest(email, password, nickName);
 
         //when
-        MemberInfo member = memberService.saveMember(email, password);
+        MemberInfo member = memberService.saveMember(memberInfoRequest);
 
         // then
         assertThat(member).isNotNull();
@@ -40,11 +44,15 @@ class MemberServiceTest {
     @Transactional
     public void 로그인_성공() {
         // given
-        String email = "test_login@test.co.kr";
-        String password = "password123";
+        String email = "test@test.co.kr";
+        String password = "1234";
+        String nickName = "정두";
+
+        MemberInfoRequest memberInfoRequest = new MemberInfoRequest(email, password, nickName);
+
 
         // 회원가입
-        MemberInfo member = memberService.saveMember(email, password);
+        MemberInfo member = memberService.saveMember(memberInfoRequest);
 
         // when
         String jwtToken = memberService.login(member.getEmail(), password);

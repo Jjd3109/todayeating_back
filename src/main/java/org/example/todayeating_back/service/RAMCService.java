@@ -22,5 +22,7 @@ public class RAMCService {
     public List<RoomAndMemberConnect> findRoomAndMember(MemberInfo memberInfo){
         return ramcRepository.findByMemberInfo(memberInfo);
     }
+//
+//    public List<RoomAndMemberConnect>
 
 }

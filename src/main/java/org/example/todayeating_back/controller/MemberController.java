@@ -29,7 +29,7 @@ public class MemberController {
      */
     @PostMapping("/api/v1/save/member")
     public ResponseEntity<?> saveMember(@RequestBody MemberInfoRequest memberInfoRequest){
-        MemberInfo memberInfo = memberService.saveMember(memberInfoRequest.email(), memberInfoRequest.password());
+        MemberInfo memberInfo = memberService.saveMember(memberInfoRequest);
         return ResponseEntity.ok().body(memberInfo);
     }
 
@@ -38,18 +38,11 @@ public class MemberController {
      */
     @GetMapping("/api/v1/login/member")
     public ResponseEntity<?> login(@RequestParam("email") String email, @RequestParam("password") String password) {
-        log.info("memberInfo 값 = {}", email);
-        log.info("memberInfo 값 = {}", password);
-
         try {
-
             String token = memberService.login(email, password); // accessToken 발급
             String refreshToken = memberService.createRefreshToken(email); // refreshToken 발급
 
-
-            log.info("token 값 = {}", token);
-            log.info("refreshToken 값 = {}", refreshToken);
-            return ResponseEntity.ok().body(Token.token(token, refreshToken));
+          return ResponseEntity.ok().body(Token.token(token, refreshToken));
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("이메일 또는 비밀번호가 틀립니다.");
         }

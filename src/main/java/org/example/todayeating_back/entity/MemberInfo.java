@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,7 +27,10 @@ public class MemberInfo implements UserDetails {
     private String email;
     private String password;
 
-    private String nickname;
+    private String nickName;
+
+    private String roles;
+
 
     @OneToMany(mappedBy = "memberInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomAndMemberConnect> roomConnections = new ArrayList<>();
@@ -35,14 +39,11 @@ public class MemberInfo implements UserDetails {
     private List<Room> room = new ArrayList<>();
 
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority(roles));
     }
 
     @Override
@@ -52,7 +53,7 @@ public class MemberInfo implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return nickName;
     }
 
     @Override
@@ -76,10 +77,11 @@ public class MemberInfo implements UserDetails {
     }
 
 
-    public static MemberInfo saveMember(String email, String password, List<String> roles){
+    public static MemberInfo saveMember(String email, String password, String nickName, String roles){
         MemberInfo memberInfo = new MemberInfo();
         memberInfo.email = email;
         memberInfo.password = password;
+        memberInfo.nickName = nickName;
         memberInfo.roles = roles;
         return memberInfo;
     }

@@ -3,6 +3,7 @@ package org.example.todayeating_back.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.todayeating_back.config.JwtTokenProvider;
+import org.example.todayeating_back.dto.request.MemberInfoRequest;
 import org.example.todayeating_back.entity.MemberInfo;
 import org.example.todayeating_back.repository.MemberInfoRepository;
 import org.springframework.security.core.userdetails.User;
@@ -27,19 +28,15 @@ public class MemberService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         MemberInfo memberInfo = memberInfoRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("이메일 또는 비밀번호가 틀립니다."));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return new User(
-                memberInfo.getEmail(),
-                memberInfo.getPassword(),
-                memberInfo.getAuthorities()
-        );
+        return memberInfo;
     }
 
-    public MemberInfo saveMember(String email, String password) {
-        List<String> roles = new ArrayList<>();
-        roles.add("ROLE_USER"); // 일시적으로 USER 권한 넣어 놓기.
-        MemberInfo memberInfo = MemberInfo.saveMember(email, passwordEncoder.encode(password), roles);
+    public MemberInfo saveMember(MemberInfoRequest memberInfoRequest) {
+        //List<String> roles = new ArrayList<>();
+        //roles.add("ROLE_USER"); // 일시적으로 USER 권한 넣어 놓기.
+        MemberInfo memberInfo = MemberInfo.saveMember(memberInfoRequest.email(), passwordEncoder.encode(memberInfoRequest.password()), memberInfoRequest.nickName(), "ROLE_USER");
         return memberInfoRepository.save(memberInfo);
     }
 
