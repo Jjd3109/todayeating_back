@@ -5,6 +5,7 @@ import lombok.ToString;
 public record RoomRequest(
         String roomName,
         String roomPassword,
+        String roomIntroduce,
         boolean openYn
 
 ) {

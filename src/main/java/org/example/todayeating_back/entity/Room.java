@@ -21,6 +21,8 @@ public class Room {
     private String roomName;
     private String roomPassword;
 
+    private String roomIntroduce;
+
     private Boolean openYn; // 공개 비공개 여부
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -34,10 +36,11 @@ public class Room {
     @JsonIgnore
     private MemberInfo memberInfo;
 
-    public static Room saveRoom(String roomName, String roomPassword, boolean openYn, MemberInfo memberInfo){
+    public static Room saveRoom(String roomName, String roomPassword, String roomIntroduce, boolean openYn, MemberInfo memberInfo){
         Room room = new Room();
         room.roomName = roomName;
         room.roomPassword = roomPassword;
+        room.roomIntroduce = roomIntroduce;
         room.openYn = openYn;
         room.memberInfo = memberInfo;
         return room;

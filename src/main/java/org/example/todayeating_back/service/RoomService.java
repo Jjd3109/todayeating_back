@@ -27,7 +27,7 @@ public class RoomService {
     private final RAMCRepository ramcRepository;
 
     public Room saveRoom(RoomRequest roomRequest, MemberInfo memberInfo){
-        Room room = Room.saveRoom(roomRequest.roomName(), roomRequest.roomPassword(), roomRequest.openYn(), memberInfo);
+        Room room = Room.saveRoom(roomRequest.roomName(), roomRequest.roomPassword(), roomRequest.roomIntroduce(), roomRequest.openYn(), memberInfo);
         RoomAndMemberConnect ramc = RoomAndMemberConnect.saveRoomAndMemberConnect(memberInfo, room);
 
         Room returnRoom = roomRepository.save(room);
