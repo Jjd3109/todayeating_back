@@ -8,8 +8,14 @@ import org.example.todayeating_back.entity.MemberInfo;
 import org.example.todayeating_back.service.RoomService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,13 +25,12 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("/api/v1/save/room")
-    public ResponseEntity<?> saveRoom(@RequestBody RoomRequest roomRequest, HttpServletRequest request) {
-        MemberInfo memberInfo = (MemberInfo) request.getAttribute("memberInfo");
+    public ResponseEntity<?> saveRoom(@ModelAttribute RoomRequest roomRequest,  @RequestParam(value = "images", required = false) List<MultipartFile> images) {
 
-        if (memberInfo == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        return ResponseEntity.ok().body(roomService.saveRoom(roomRequest, memberInfo));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return ResponseEntity.ok().body(roomService.saveRoom(roomRequest, images));
+        //return ResponseEntity.ok().body("");
     }
 
     /*
