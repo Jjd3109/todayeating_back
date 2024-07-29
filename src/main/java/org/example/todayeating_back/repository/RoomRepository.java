@@ -17,6 +17,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
 
 
-    @Query("SELECT r FROM Room r LEFT JOIN FETCH r.memberInfo LEFT join fetch r.roomImages ")
+    @Query("SELECT r FROM Room r " +
+            "LEFT JOIN FETCH r.memberInfo " +
+            "LEFT join fetch r.roomImages ")
     List<Room> findAllWithMember(Pageable pageable);
 }

@@ -28,6 +28,9 @@ public class RoomController {
     public ResponseEntity<?> saveRoom(@ModelAttribute RoomRequest roomRequest,  @RequestParam(value = "images", required = false) List<MultipartFile> images) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("roomRequest 값 = {}" , roomRequest);
+        log.info("images 값 = {}" , images);
+
 
         return ResponseEntity.ok().body(roomService.saveRoom(roomRequest, images));
         //return ResponseEntity.ok().body("");
