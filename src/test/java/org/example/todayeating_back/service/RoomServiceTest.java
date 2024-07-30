@@ -51,11 +51,12 @@ class RoomServiceTest {
 
         String roomName = "roomNameTest";
         String roomPassword = "1234";
+        String roomIntroduce = "테스트에용!!";
         boolean openYn = true;
-        RoomRequest roomRequest = new RoomRequest(roomName, roomPassword, openYn);
+        RoomRequest roomRequest = new RoomRequest(roomName, roomPassword, roomIntroduce, openYn);
 
         String roomNameTwo = "roonNameTest";
-        RoomRequest roomRequest2 = new RoomRequest(roomNameTwo, roomPassword, openYn);
+        RoomRequest roomRequest2 = new RoomRequest(roomNameTwo, roomPassword, roomIntroduce, openYn);
 
 
 

@@ -26,14 +26,7 @@ public class RoomController {
 
     @PostMapping("/api/v1/save/room")
     public ResponseEntity<?> saveRoom(@ModelAttribute RoomRequest roomRequest,  @RequestParam(value = "images", required = false) List<MultipartFile> images) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("roomRequest 값 = {}" , roomRequest);
-        log.info("images 값 = {}" , images);
-
-
         return ResponseEntity.ok().body(roomService.saveRoom(roomRequest, images));
-        //return ResponseEntity.ok().body("");
     }
 
     /*
@@ -42,5 +35,15 @@ public class RoomController {
     @GetMapping("/api/v1/find/rooms")
     public ResponseEntity<?> findRooms(@RequestParam("page") int page, @RequestParam("size") int size){
         return ResponseEntity.ok().body(roomService.findRooms(page, size));
+    }
+
+    /*
+     * 내가 들어가 있는 방
+     */
+    @GetMapping("/api/v1/find/myRooms")
+    public ResponseEntity<?> findMyRooms(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return ResponseEntity.ok().body(roomService.findMyRomms(authentication));
     }
 }

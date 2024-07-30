@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-@ToString
 public class Map {
 
     @Id
@@ -28,7 +27,7 @@ public class Map {
     private double longitude;
     private double rating;
 
-    @OneToMany(mappedBy = "map", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "map", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Images> images = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

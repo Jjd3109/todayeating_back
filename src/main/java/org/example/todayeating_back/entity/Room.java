@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +15,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-@ToString
 public class Room {
 
     @Id
@@ -35,12 +35,11 @@ public class Room {
     private List<Map> map = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @BatchSize(size = 10)
     private List<RoomImages> roomImages = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberinfo_id")
-    @JsonIgnore
     private MemberInfo memberInfo;
 
     public static Room saveRoom(String roomName, String roomPassword, String roomIntroduce, boolean openYn, MemberInfo memberInfo){

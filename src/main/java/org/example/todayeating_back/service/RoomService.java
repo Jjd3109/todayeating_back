@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.todayeating_back.dto.request.RoomRequest;
 import org.example.todayeating_back.dto.response.FindMapInfoResponse;
+import org.example.todayeating_back.dto.response.FindMyRoomsResponse;
 import org.example.todayeating_back.dto.response.RoomResponse;
 import org.example.todayeating_back.entity.*;
 import org.example.todayeating_back.repository.MemberInfoRepository;
@@ -105,6 +106,11 @@ public class RoomService {
     }
 
 
+    public List<FindMyRoomsResponse> findMyRomms(Authentication authentication) {
+        MemberInfo memberInfo = loadMemberInfo(authentication.getName());
+        return ramcRepository.findByMemberInfo(memberInfo).stream()
+                .map(FindMyRoomsResponse::response)
+                .collect(Collectors.toList());
 
-
+    }
 }

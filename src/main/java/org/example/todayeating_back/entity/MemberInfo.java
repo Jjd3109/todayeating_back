@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-@ToString
 public class MemberInfo implements UserDetails {
 
     @Id
@@ -32,10 +31,10 @@ public class MemberInfo implements UserDetails {
     private String roles;
 
 
-    @OneToMany(mappedBy = "memberInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "memberInfo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RoomAndMemberConnect> roomConnections = new ArrayList<>();
 
-    @OneToMany(mappedBy = "memberInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "memberInfo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Room> room = new ArrayList<>();
 
 
