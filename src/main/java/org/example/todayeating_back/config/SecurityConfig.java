@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/save/mapInfo").hasRole("USER")
                 .requestMatchers("/api/v1/delete/mapInfo").hasRole("USER")
                 .requestMatchers("/api/v1/save/room").hasRole("USER")
-                .requestMatchers("/images/**").hasRole("USER")
+                .requestMatchers("/images/**").permitAll()
                 .requestMatchers("/api/v1/save/member").permitAll()
                 .requestMatchers("/api/v1/login/member").permitAll()
                 .requestMatchers("/api/v1/find/rooms").permitAll()
