@@ -9,7 +9,8 @@ public record FindMyRoomsResponse(
         Long id,
         String roomName,
         String roomIntroduce,
-        List<String> roomImagesPath
+        List<String> roomImagesPath,
+        boolean openYn
 
 ) {
     public static FindMyRoomsResponse response(RoomAndMemberConnect roomAndMemberConnect) {
@@ -18,7 +19,8 @@ public record FindMyRoomsResponse(
                 roomAndMemberConnect.getId(),
                 room.getRoomName(),
                 room.getRoomIntroduce(),
-                room.getImagePaths()
+                room.getImagePaths(),
+                room.getOpenYn()
         );
     }
 }
