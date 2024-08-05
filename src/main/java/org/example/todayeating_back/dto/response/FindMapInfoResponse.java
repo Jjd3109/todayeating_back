@@ -13,7 +13,8 @@ public record FindMapInfoResponse(
         double latitude,
         double longitude,
         double rating,
-        List<String> imagePath
+        List<String> imagePath,
+        Long roomId
 ) {
     // 생성자를 추가할 수 있으며, 주로 필드 초기화 등에 사용됩니다.
     public static FindMapInfoResponse from(Map map) {
@@ -26,7 +27,8 @@ public record FindMapInfoResponse(
                 map.getLatitude(),
                 map.getLongitude(),
                 map.getRating(),
-                map.getImagePaths()
+                map.getImagePaths(),
+                map.getRoom().getId()
         );
     }
 

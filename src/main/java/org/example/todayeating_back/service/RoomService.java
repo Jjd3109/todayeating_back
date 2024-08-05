@@ -113,4 +113,10 @@ public class RoomService {
                 .collect(Collectors.toList());
 
     }
+
+
+    public Room findRoom(Long id){
+        Room room = roomRepository.findById(id).orElseThrow();
+        return  room;
+    }
 }

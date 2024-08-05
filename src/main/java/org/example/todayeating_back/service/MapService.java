@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.todayeating_back.dto.response.FindMapInfoResponse;
 import org.example.todayeating_back.entity.Images;
 import org.example.todayeating_back.entity.Map;
+import org.example.todayeating_back.entity.Room;
 import org.example.todayeating_back.repository.MapRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,8 +47,8 @@ public class MapService {
         return FindMapInfoResponse.from(mapRepository.save(map));
     }
 
-    public List<FindMapInfoResponse> findMap() {
-        return mapRepository.findAll().stream()
+    public List<FindMapInfoResponse> findMap(Room room) {
+        return mapRepository.findByRoom(room).stream()
                 .map(FindMapInfoResponse::from) // Map -> FindMapInfoResponse 변환
                 .toList();
     }

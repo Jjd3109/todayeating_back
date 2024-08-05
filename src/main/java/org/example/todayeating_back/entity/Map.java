@@ -34,7 +34,7 @@ public class Map {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public static Map saveMap(String location, String content, String markerId, String review, double latitude, double longitude, double rating){
+    public static Map saveMap(String location, String content, String markerId, String review, double latitude, double longitude, double rating, Room room){
         Map map = new Map();
         map.location = location;
         map.content = content;
@@ -43,6 +43,7 @@ public class Map {
         map.latitude = latitude;
         map.longitude = longitude;
         map.rating = rating;
+        map.room = room;
         return map;
     }
 
