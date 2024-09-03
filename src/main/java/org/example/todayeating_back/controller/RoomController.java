@@ -25,8 +25,8 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("/api/v1/save/room")
-    public ResponseEntity<?> saveRoom(@ModelAttribute RoomRequest roomRequest,  @RequestParam(value = "images", required = false) List<MultipartFile> images) {
-        return ResponseEntity.ok().body(roomService.saveRoom(roomRequest, images));
+    public ResponseEntity<?> saveRoom(@ModelAttribute RoomRequest roomRequest) {
+        return ResponseEntity.ok().body(roomService.saveRoom(roomRequest));
     }
 
     /*

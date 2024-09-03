@@ -13,7 +13,6 @@ public interface RAMCRepository extends JpaRepository<RoomAndMemberConnect, Long
     @Query("SELECT DISTINCT r FROM RoomAndMemberConnect r " +
             "JOIN FETCH r.memberInfo m " +
             "JOIN FETCH r.room ro " +
-            "LEFT JOIN FETCH ro.roomImages ri " +
             "WHERE r.memberInfo = :memberInfo")
     List<RoomAndMemberConnect> findByMemberInfo(@Param("memberInfo") MemberInfo memberInfo);
 }

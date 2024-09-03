@@ -5,6 +5,7 @@ import org.example.todayeating_back.entity.MemberInfo;
 import org.example.todayeating_back.entity.Room;
 import org.example.todayeating_back.entity.RoomAndMemberConnect;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record RoomResponse(
@@ -12,7 +13,8 @@ public record RoomResponse(
         String roomName,
         String roomPassword,
         String saveName,
-        boolean openYn
+        boolean openYn,
+        LocalDateTime createdDate
 
 ) {
     public static RoomResponse response(Room room){
@@ -21,7 +23,8 @@ public record RoomResponse(
                 room.getRoomName(),
                 room.getRoomPassword(),
                 room.getMemberInfo().getEmail(),
-                room.getOpenYn()
+                room.getOpenYn(),
+                room.getCreatedDate()
         );
     }
 

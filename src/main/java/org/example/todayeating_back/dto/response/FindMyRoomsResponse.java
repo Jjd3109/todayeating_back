@@ -2,6 +2,7 @@ package org.example.todayeating_back.dto.response;
 
 import org.example.todayeating_back.entity.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -9,8 +10,8 @@ public record FindMyRoomsResponse(
         Long id,
         String roomName,
         String roomIntroduce,
-        List<String> roomImagesPath,
-        boolean openYn
+        boolean openYn,
+        LocalDateTime createdDate
 
 ) {
     public static FindMyRoomsResponse response(RoomAndMemberConnect roomAndMemberConnect) {
@@ -19,8 +20,8 @@ public record FindMyRoomsResponse(
                 roomAndMemberConnect.getId(),
                 room.getRoomName(),
                 room.getRoomIntroduce(),
-                room.getImagePaths(),
-                room.getOpenYn()
+                room.getOpenYn(),
+                room.getCreatedDate()
         );
     }
 }

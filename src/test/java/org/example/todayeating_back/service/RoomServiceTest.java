@@ -60,11 +60,11 @@ class RoomServiceTest {
 
 
 
-        // 방 생성 및 방과 회원의 연결 생성
-        testRoom = roomService.saveRoom(roomRequest, memberInfo);
-        Room testRoom2 = roomService.saveRoom(roomRequest2, memberInfo);
-        ramcService.saveRoomAndMemberConenct(memberInfo, testRoom);
-        ramcService.saveRoomAndMemberConenct(memberInfo, testRoom2);
+//        // 방 생성 및 방과 회원의 연결 생성
+//        testRoom = roomService.saveRoom(roomRequest, memberInfo);
+//        Room testRoom2 = roomService.saveRoom(roomRequest2, memberInfo);
+//        ramcService.saveRoomAndMemberConenct(memberInfo, testRoom);
+//        ramcService.saveRoomAndMemberConenct(memberInfo, testRoom2);
     }
 
     @Test

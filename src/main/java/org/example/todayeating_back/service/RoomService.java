@@ -39,7 +39,7 @@ public class RoomService {
     private final RAMCRepository ramcRepository;
     private final MemberInfoRepository memberInfoRepository;
 
-    public Room saveRoom(RoomRequest roomRequest,  @RequestParam(value = "images", required = false) List<MultipartFile> images){
+    public Room saveRoom(RoomRequest roomRequest){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         MemberInfo memberInfo = loadMemberInfo(authentication.getName());
 
@@ -47,24 +47,24 @@ public class RoomService {
         Room room = Room.saveRoom(roomRequest.roomName(), roomRequest.roomPassword(), roomRequest.roomIntroduce(), roomRequest.openYn(), memberInfo);
         RoomAndMemberConnect ramc = RoomAndMemberConnect.saveRoomAndMemberConnect(memberInfo, room);
 
-        try {
-            for(MultipartFile imageFile : images){
-                if (!images.isEmpty()) {
-                    String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-                    Path filePath = Paths.get("C:/Users/정종두/Desktop/테스트/" + fileName);
-                    //Path filePath = Paths.get("C:/Users/JD/Desktop/새 폴더/" + fileName);
-                    Files.copy(imageFile.getInputStream(), filePath);
-
-                    RoomImages image = RoomImages.builder()
-                            .imagePath(filePath.toString())
-                            .build();
-
-                    room.addImage(image);
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            for(MultipartFile imageFile : images){
+//                if (!images.isEmpty()) {
+//                    String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+//                    Path filePath = Paths.get("C:/Users/정종두/Desktop/테스트/" + fileName);
+//                    //Path filePath = Paths.get("C:/Users/JD/Desktop/새 폴더/" + fileName);
+//                    Files.copy(imageFile.getInputStream(), filePath);
+//
+//                    RoomImages image = RoomImages.builder()
+//                            .imagePath(filePath.toString())
+//                            .build();
+//
+//                    room.addImage(image);
+//                }
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
 
         Room returnRoom = roomRepository.save(room);

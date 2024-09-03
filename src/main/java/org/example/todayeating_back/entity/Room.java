@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Room {
+public class Room extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +33,10 @@ public class Room {
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Map> map = new ArrayList<>();
-
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-    @BatchSize(size = 10)
-    private List<RoomImages> roomImages = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @BatchSize(size = 10)
+//    private List<RoomImages> roomImages = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberinfo_id")
@@ -52,18 +52,18 @@ public class Room {
         return room;
     }
 
-    public void addImage(RoomImages roomImage){
-        roomImages.add(roomImage);
-        roomImage.setRoom(this);
-    }
-
-    public List<String> getImagePaths() {
-        if (roomImages == null || roomImages.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return roomImages.stream()
-                .map(RoomImages::getImagePath)
-                .collect(Collectors.toList());
-    }
+//    public void addImage(RoomImages roomImage){
+//        roomImages.add(roomImage);
+//        roomImage.setRoom(this);
+//    }
+//
+//    public List<String> getImagePaths() {
+//        if (roomImages == null || roomImages.isEmpty()) {
+//            return Collections.emptyList();
+//        }
+//        return roomImages.stream()
+//                .map(RoomImages::getImagePath)
+//                .collect(Collectors.toList());
+//    }
 
 }
