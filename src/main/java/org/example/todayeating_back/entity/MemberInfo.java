@@ -23,9 +23,11 @@ public class MemberInfo extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String email;
     private String password;
 
+    @Column(unique = true)
     private String nickName;
 
     private String roles;
@@ -83,5 +85,9 @@ public class MemberInfo extends BaseTimeEntity implements UserDetails {
         memberInfo.nickName = nickName;
         memberInfo.roles = roles;
         return memberInfo;
+    }
+
+    public void updateMember(String nickName) {
+        this.nickName = nickName;
     }
 }
