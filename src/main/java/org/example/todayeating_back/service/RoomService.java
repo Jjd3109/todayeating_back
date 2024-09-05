@@ -14,10 +14,12 @@ import org.example.todayeating_back.repository.RoomRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
@@ -38,55 +41,45 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final RAMCRepository ramcRepository;
     private final MemberInfoRepository memberInfoRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public Room saveRoom(RoomRequest roomRequest){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        MemberInfo memberInfo = loadMemberInfo(authentication.getName());
+    public boolean saveRoom(RoomRequest roomRequest){
+        //성공시 true
+        try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-
-        Room room = Room.saveRoom(roomRequest.roomName(), roomRequest.roomPassword(), roomRequest.roomIntroduce(), roomRequest.openYn(), memberInfo);
-        RoomAndMemberConnect ramc = RoomAndMemberConnect.saveRoomAndMemberConnect(memberInfo, room);
-
-//        try {
-//            for(MultipartFile imageFile : images){
-//                if (!images.isEmpty()) {
-//                    String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-//                    Path filePath = Paths.get("C:/Users/정종두/Desktop/테스트/" + fileName);
-//                    //Path filePath = Paths.get("C:/Users/JD/Desktop/새 폴더/" + fileName);
-//                    Files.copy(imageFile.getInputStream(), filePath);
-//
-//                    RoomImages image = RoomImages.builder()
-//                            .imagePath(filePath.toString())
-//                            .build();
-//
-//                    room.addImage(image);
-//                }
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+            MemberInfo memberInfo = loadMemberInfo(authentication.getName());
 
 
-        Room returnRoom = roomRepository.save(room);
-        RoomAndMemberConnect returnRamc = ramcRepository.save(ramc); // 방 생성 할 때 그 방의 참여자 repository도 생성
+            Room room = Room.saveRoom(roomRequest.roomName(), passwordEncoder.encode(roomRequest.roomPassword()), roomRequest.roomIntroduce(), roomRequest.openYn(), memberInfo);
+            RoomAndMemberConnect ramc = RoomAndMemberConnect.saveRoomAndMemberConnect(memberInfo, room);
 
-        return returnRoom;
+
+
+            Room returnRoom = roomRepository.save(room);
+            RoomAndMemberConnect returnRamc = ramcRepository.save(ramc); // 방 생성 할 때 그 방의 참여자 repository도 생성
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+
     }
 
     /*
-     * v1 LEFT JOIN FETCH
+     * v1 LEFT JOIN FETCH를 이용한 페이징
      */
 
-    public List<RoomResponse> findRooms(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public List<RoomResponse> findRooms(int page, int size, Authentication authentication) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
-        return roomRepository.findAllWithMember(pageable).stream()
+
+        return roomRepository.findAllWithMember(pageable, authentication.getName()).stream()
                 .map(RoomResponse::response)
                 .collect(Collectors.toList());
     }
 
     /*
-     * v2 Entity Graph
+     * v2 Entity Graph를 이용한 페이징
      */
 
 
@@ -116,7 +109,31 @@ public class RoomService {
 
 
     public Room findRoom(Long id){
-        Room room = roomRepository.findById(id).orElseThrow();
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Map이 없습니다."));
         return  room;
     }
 }
+
+/*
+ * 이미지 넣기 위한 것
+ */
+
+//        try {
+//            for(MultipartFile imageFile : images){
+//                if (!images.isEmpty()) {
+//                    String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+//                    Path filePath = Paths.get("C:/Users/정종두/Desktop/테스트/" + fileName);
+//                    //Path filePath = Paths.get("C:/Users/JD/Desktop/새 폴더/" + fileName);
+//                    Files.copy(imageFile.getInputStream(), filePath);
+//
+//                    RoomImages image = RoomImages.builder()
+//                            .imagePath(filePath.toString())
+//                            .build();
+//
+//                    room.addImage(image);
+//                }
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }

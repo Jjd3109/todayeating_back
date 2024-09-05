@@ -22,7 +22,7 @@ public record RoomResponse(
                 room.getId(),
                 room.getRoomName(),
                 room.getRoomPassword(),
-                room.getMemberInfo().getEmail(),
+                room.getMemberInfo().getNickName(),
                 room.getOpenYn(),
                 room.getCreatedDate()
         );

@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/save/room").hasRole("USER")
                 .requestMatchers("/api/v1/find/memberInfo").hasRole("USER")
                 .requestMatchers("/api/v1/update/memberInfo").hasRole("USER")
+                .requestMatchers("/api/v1/save/ramc").hasRole("USER")
                 .requestMatchers("/images/**").permitAll()
                 .requestMatchers("/api/v1/save/member").permitAll()
                 .requestMatchers("/api/v1/login/member").permitAll()

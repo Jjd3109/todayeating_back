@@ -47,7 +47,10 @@ public class MapInfoController {
 
     @GetMapping("/find/mapInfo/{id}")
     public ResponseEntity<?> findMapInfo(@PathVariable Long id) {
+        log.info("id 값 = {}", id);
+
         Room room = roomService.findRoom(id);
+
 
         return ResponseEntity.ok().body(mapService.findMap(room));
     }

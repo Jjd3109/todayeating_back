@@ -31,7 +31,6 @@ public class MemberController {
     @PostMapping("/api/v1/save/member")
     public ResponseEntity<?> saveMember(@RequestBody MemberInfoRequest memberInfoRequest){
         try{
-            log.info("여기로값이 안오나?");
             MemberInfo memberInfo = memberService.saveMember(memberInfoRequest);
             return ResponseEntity.ok().body(memberInfo);
         }catch(Exception e){

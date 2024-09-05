@@ -11,7 +11,8 @@ public record FindMyRoomsResponse(
         String roomName,
         String roomIntroduce,
         boolean openYn,
-        LocalDateTime createdDate
+        LocalDateTime createdDate,
+        Long roomId
 
 ) {
     public static FindMyRoomsResponse response(RoomAndMemberConnect roomAndMemberConnect) {
@@ -21,7 +22,8 @@ public record FindMyRoomsResponse(
                 room.getRoomName(),
                 room.getRoomIntroduce(),
                 room.getOpenYn(),
-                room.getCreatedDate()
+                room.getCreatedDate(),
+                room.getId()
         );
     }
 }
