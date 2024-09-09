@@ -29,6 +29,7 @@ public class Room extends BaseTimeEntity {
     private Boolean openYn; // 공개 비공개 여부
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 10)  // 배치 사이즈 설정
     private List<RoomAndMemberConnect> roomAndMemberConnect = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)

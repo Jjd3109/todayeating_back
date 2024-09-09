@@ -52,7 +52,6 @@ public class RoomController {
     public ResponseEntity<?> findMyRooms(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        log.info("roomService.findMyRomms(authentication) 값 = {}", roomService.findMyRomms(authentication));
         return ResponseEntity.ok().body(roomService.findMyRomms(authentication));
     }
 }

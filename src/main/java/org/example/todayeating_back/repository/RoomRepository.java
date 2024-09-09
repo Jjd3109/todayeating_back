@@ -15,4 +15,5 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "WHERE r.memberInfo.email != :email"
     )
     List<Room> findAllWithMember(Pageable pageable, @Param("email") String email);
+
 }

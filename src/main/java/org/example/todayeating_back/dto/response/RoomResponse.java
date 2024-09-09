@@ -16,6 +16,7 @@ public record RoomResponse(
         boolean openYn,
         LocalDateTime createdDate
 
+
 ) {
     public static RoomResponse response(Room room){
         return new RoomResponse(
@@ -25,6 +26,7 @@ public record RoomResponse(
                 room.getMemberInfo().getNickName(),
                 room.getOpenYn(),
                 room.getCreatedDate()
+
         );
     }
 
