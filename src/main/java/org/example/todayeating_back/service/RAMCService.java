@@ -35,8 +35,6 @@ public class RAMCService {
         } else {
             throw new RoomAlreadyEnteredException("이미 이 방에 참가하였습니다.");
         }
-
-
     }
 
     /*
@@ -45,8 +43,9 @@ public class RAMCService {
     public List<RoomAndMemberConnect> findRoomAndMember(MemberInfo memberInfo){
         return ramcRepository.findByMemberInfo(memberInfo);
     }
+
     /*
-     * 방찾기
+     * 방번호를 통해서 해당 RoomEnterRequest에
      */
     public Room findRoom(RoomEnterRequest roomEnterRequest){
         return  roomRepository.findById(roomEnterRequest.id())
@@ -54,12 +53,15 @@ public class RAMCService {
     }
 
     /*
-     * findMember 회원 찾기
+     * 이메일로 회원 아이디 조회
      */
     public MemberInfo findMemberInfo(Authentication authentication){
         return memberInfoRepository.findByEmail(authentication.getName()).orElseThrow();
     }
 
+    /*
+     * 멤버정보와 방을 토대로 내가 이방에 접속해있는지 아닌지 확인 하는 메서드
+     */
     public List<RoomAndMemberConnect> findRoomAndMemberInfo(MemberInfo memberInfo, Room room){
         return ramcRepository.findByMemberInfoAndAndRoom(memberInfo, room);
     }

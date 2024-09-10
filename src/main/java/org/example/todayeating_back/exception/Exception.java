@@ -14,5 +14,9 @@ public class Exception extends RuntimeException {
         return ex.getMessage();
     }
 
-
+    @ExceptionHandler(DuplicateNickNameException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleDuplicateNickNameException(DuplicateNickNameException ex) {
+        return ex.getMessage();
+    }
 }

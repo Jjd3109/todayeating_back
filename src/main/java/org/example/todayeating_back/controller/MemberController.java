@@ -39,15 +39,14 @@ public class MemberController {
     }
 
     /*
-     * 회원 가입 메서드
+     * 회원 수정 메서드
      */
     @PostMapping("/api/v1/update/memberInfo")
     public ResponseEntity<?> updateMemberInfo(@RequestBody MemberInfoRequest memberInfoRequest){
         try{
-
             return ResponseEntity.ok().body(memberService.updateMember(memberInfoRequest));
         }catch(Exception e){
-            return ResponseEntity.badRequest().body("회원 가입이 실패하였습니다.");
+            return ResponseEntity.badRequest().body("회원 수정이 실패하였습니다.");
         }
     }
 

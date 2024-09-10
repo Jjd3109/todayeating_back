@@ -72,8 +72,12 @@ public class RoomService {
     public List<RoomResponse> findRooms(int page, int size, Authentication authentication) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
+        //1. memberInfo 값 가져오기
+        MemberInfo memberInfo = findMemberInfo(authentication);
+        List<RoomAndMemberConnect> roomAndMemberConnectList = findRoomAndMember(memberInfo);
 
-        return roomRepository.findAllWithMember(pageable, authentication.getName()).stream()
+
+        return roomRepository.findAllWithoutConnects(pageable, memberInfo).stream()
                 .map(RoomResponse::response)
                 .collect(Collectors.toList());
     }
@@ -112,6 +116,22 @@ public class RoomService {
         Room room = roomRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Map이 없습니다."));
         return  room;
+    }
+
+
+    /*
+     * 이메일로 회원 아이디 조회
+     */
+    public MemberInfo findMemberInfo(Authentication authentication){
+        return memberInfoRepository.findByEmail(authentication.getName()).orElseThrow();
+    }
+
+
+    /*
+     * 방에 접속 되어 있는 사람인가 확인
+     */
+    public List<RoomAndMemberConnect> findRoomAndMember(MemberInfo memberInfo){
+        return ramcRepository.findByMemberInfo(memberInfo);
     }
 }
 

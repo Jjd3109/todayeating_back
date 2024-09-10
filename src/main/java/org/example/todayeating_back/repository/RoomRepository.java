@@ -1,5 +1,6 @@
 package org.example.todayeating_back.repository;
 
+import org.example.todayeating_back.entity.MemberInfo;
 import org.example.todayeating_back.entity.Room;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,10 +11,9 @@ import java.util.List;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    @Query("SELECT r FROM Room r " +
-            "LEFT JOIN FETCH r.memberInfo " +
-            "WHERE r.memberInfo.email != :email"
-    )
-    List<Room> findAllWithMember(Pageable pageable, @Param("email") String email);
+    @Query("SELECT r FROM Room r WHERE  r.id NOT IN (" +
+            "SELECT rc.room.id FROM RoomAndMemberConnect rc WHERE rc.memberInfo = :memberInfo)")
+    List<Room> findAllWithoutConnects(Pageable pageable, @Param("memberInfo") MemberInfo memberInfo);
+
 
 }

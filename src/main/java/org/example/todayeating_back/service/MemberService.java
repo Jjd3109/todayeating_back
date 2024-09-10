@@ -8,7 +8,9 @@ import org.example.todayeating_back.dto.request.MemberInfoRequest;
 import org.example.todayeating_back.dto.response.FindEmail;
 import org.example.todayeating_back.dto.response.FindEmailAll;
 import org.example.todayeating_back.entity.MemberInfo;
+import org.example.todayeating_back.exception.DuplicateNickNameException;
 import org.example.todayeating_back.repository.MemberInfoRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -127,10 +129,13 @@ public class MemberService implements UserDetailsService {
     public boolean updateMember(MemberInfoRequest memberInfoRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-
-        MemberInfo memberInfo = memberInfoRepository.findByEmail(authentication.getName()).orElseThrow();
-        memberInfo.updateMember(memberInfoRequest.nickName());
-
-        return true;
+        try {
+            MemberInfo memberInfo = memberInfoRepository.findByEmail(authentication.getName()).orElseThrow();
+            memberInfo.updateMember(memberInfoRequest.nickName());
+            return true;
+        } catch (DataIntegrityViolationException e) {
+            // 중복된 nickName 예외 처리
+            throw new DuplicateNickNameException("이미 사용 중인 닉네임입니다.");
+        }
     }
 }
