@@ -1,35 +1,27 @@
 package org.example.todayeating_back.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.todayeating_back.dto.request.RoomPassoword;
 import org.example.todayeating_back.dto.request.RoomRequest;
-import org.example.todayeating_back.dto.response.FindMapInfoResponse;
 import org.example.todayeating_back.dto.response.FindMyRoomsResponse;
 import org.example.todayeating_back.dto.response.RoomResponse;
 import org.example.todayeating_back.entity.*;
 import org.example.todayeating_back.repository.MemberInfoRepository;
 import org.example.todayeating_back.repository.RAMCRepository;
 import org.example.todayeating_back.repository.RoomRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -133,6 +125,22 @@ public class RoomService {
     public List<RoomAndMemberConnect> findRoomAndMember(MemberInfo memberInfo){
         return ramcRepository.findByMemberInfo(memberInfo);
     }
+
+    /*
+     *  방 비번이 맞는가 틀린가용
+     */
+    public boolean checkPassword(RoomPassoword roomPassoword) {
+        log.info("roompasswd id = {} {}", roomPassoword.id(), roomPassoword.roomPassword());
+
+        Room room = roomRepository.findById(roomPassoword.id())
+                .orElseThrow(() -> new NoSuchElementException("방을 찾을 수 없습니다."));
+
+        // 비밀번호 비교
+        boolean isPasswordMatch = passwordEncoder.matches(roomPassoword.roomPassword(), room.getRoomPassword());
+
+        return isPasswordMatch;
+    }
+
 }
 
 /*

@@ -89,4 +89,18 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원 정보 불러오기 실패");
         }
     }
+
+    /*
+     * 회원의 정보를 가져와서 처리
+     */
+    @GetMapping("/api/v1/delete/token")
+    public ResponseEntity<?> deleteToken(){
+        try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            return ResponseEntity.ok().body(memberService.findEmailAll(authentication.getName()));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원 정보 불러오기 실패");
+        }
+    }
 }

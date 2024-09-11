@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/save/member").permitAll()
                 .requestMatchers("/api/v1/login/member").permitAll()
                 .requestMatchers("/api/v1/find/rooms").permitAll()
+                .requestMatchers("/api/v1/find/roomPassword").permitAll()
                 .requestMatchers("/api/v1/find/myRooms").hasRole("USER")
                 .anyRequest().anonymous()
         );
