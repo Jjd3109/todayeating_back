@@ -25,24 +25,50 @@ public class MapService {
 
     public FindMapInfoResponse saveMapWithImages(Map map, List<MultipartFile> imageFiles) throws IOException {
 
-            try {
-                for(MultipartFile imageFile : imageFiles){
-                    if (!imageFiles.isEmpty()) {
-                        String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-                        Path filePath = Paths.get("C:/Users/정종두/Desktop/테스트/" + fileName);
-                        //Path filePath = Paths.get("C:/Users/JD/Desktop/새 폴더/" + fileName);
-                        Files.copy(imageFile.getInputStream(), filePath);
+//            try {
+//                for(MultipartFile imageFile : imageFiles){
+//                    if (!imageFiles.isEmpty()) {
+//                        String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+//                        //Path filePath = Paths.get("C:/Users/정종두/Desktop/테스트/" + fileName);
+//                        Path filePath = Paths.get("/home/ec2-user/eating/file" + fileName);
+//
+//
+//                        //Path filePath = Paths.get("C:/Users/JD/Desktop/새 폴더/" + fileName);
+//                        Files.copy(imageFile.getInputStream(), filePath);
+//
+//                        Images image = Images.builder()
+//                                .imagePath(filePath.toString())
+//                                .build();
+//
+//                        map.addImage(image);
+//                    }
+//                }
+//            }catch (NullPointerException n){
+//                return FindMapInfoResponse.from(mapRepository.save(map));
+//            }
 
-                        Images image = Images.builder()
-                                .imagePath(filePath.toString())
-                                .build();
+        try {
+            for (MultipartFile imageFile : imageFiles) {
+                if (!imageFile.isEmpty()) {
+                    String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+                    Path filePath = Paths.get("/home/ec2-user/eating/file/" + fileName); // 올바른 경로
 
-                        map.addImage(image);
-                    }
+                    // 파일 저장
+                    Files.copy(imageFile.getInputStream(), filePath);
+
+                    // 이미지 경로 설정
+                    Images image = Images.builder()
+                            .imagePath("/images/" + fileName) // 웹에서 접근 가능한 경로로 설정
+                            .build();
+
+                    map.addImage(image);
                 }
-            }catch (NullPointerException n){
-                return FindMapInfoResponse.from(mapRepository.save(map));
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
         return FindMapInfoResponse.from(mapRepository.save(map));
     }

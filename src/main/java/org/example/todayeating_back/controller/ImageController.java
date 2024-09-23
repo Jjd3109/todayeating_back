@@ -16,7 +16,8 @@ public class ImageController {
     @GetMapping("/images/{filename:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         try {
-            Path file = Paths.get("C:/Users/정종두/Desktop/테스트/").resolve(filename);
+            // EC2 인스턴스의 이미지 저장 경로로 수정
+            Path file = Paths.get("/home/ec2-user/eating/file").resolve(filename);
             Resource resource = new UrlResource(file.toUri());
 
             if (resource.exists() || resource.isReadable()) {
